@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BrowserProvider, Contract } from 'ethers';
+import { ethers } from 'ethers';
+import Web3Modal from 'web3modal';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Card,
@@ -23,12 +25,6 @@ import { Separator } from '@/components/ui/separator';
 // Importa i contratti dal file contracts.tsx
 import { contracts, ContractData } from './contracts';
 
-declare global {
-  interface Window {
-    ethereum?: any;
-  }
-}
-
 interface ContractInfo {
   address: string;
   objectCount: number;
@@ -44,7 +40,7 @@ interface ObjectDetails {
 }
 
 const HomePage = () => {
-  const [contract, setContract] = useState<Contract | null>(null);
+  const [contract, setContract] = useState<ethers.Contract | null>(null);
   const [account, setAccount] = useState<string | null>(null);
   const [ownerName, setOwnerName] = useState<string>('');
   const [title, setTitle] = useState<string>('');
@@ -57,6 +53,31 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingMessage, setLoadingMessage] = useState<string>('');
   const [selectedContractData, setSelectedContractData] = useState<ContractData | null>(null);
+  const [web3Modal, setWeb3Modal] = useState<Web3Modal | null>(null);
+
+  // Configura le opzioni del provider per WalletConnect
+  const providerOptions = {
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        infuraId: 'd20498bf032647fda188ad14bfd7f0de', // Sostituisci con la tua API Key di Infura
+        rpc: {
+          1: 'https://mainnet.infura.io/v3/d20498bf032647fda188ad14bfd7f0de',
+          137: 'https://rpc-amoy.polygon.technology', // Rete Polygon Mainnet
+          // Aggiungi altre reti se necessario
+        },
+      },
+    },
+  };
+
+  useEffect(() => {
+    const web3ModalInstance = new Web3Modal({
+      network: 'mainnet', // 'matic' per Polygon
+      cacheProvider: false,
+      providerOptions,
+    });
+    setWeb3Modal(web3ModalInstance);
+  }, []);
 
   useEffect(() => {
     if (contract) {
@@ -66,38 +87,38 @@ const HomePage = () => {
 
   const connectWallet = async () => {
     setErrorMessage(null);
-    if (typeof window === 'undefined' || !window.ethereum) {
-      setErrorMessage('MetaMask non è installato!');
-      return;
-    }
-
     if (!selectedContractData) {
       setErrorMessage('Devi selezionare un contratto!');
       return;
     }
 
     try {
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const provider = new BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
+      const instance = await web3Modal?.connect();
+      const provider = new ethers.providers.Web3Provider(instance);
+      const signer = provider.getSigner();
       const accountAddress = await signer.getAddress();
       setAccount(accountAddress);
 
-      const contractInstance = new Contract(
+      const contractInstance = new ethers.Contract(
         selectedContractData.address,
         selectedContractData.abi,
         signer
       );
       setContract(contractInstance);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Errore durante la connessione al wallet:', error.message);
-        setErrorMessage('Errore durante la connessione al wallet.');
-      } else {
-        console.error('Errore sconosciuto durante la connessione al wallet.');
-        setErrorMessage('Errore sconosciuto durante la connessione al wallet.');
-      }
+    } catch (error: any) {
+      console.error('Errore durante la connessione al wallet:', error.message);
+      setErrorMessage('Errore durante la connessione al wallet.');
     }
+  };
+
+  const disconnectWallet = async () => {
+    if (web3Modal) {
+      await web3Modal.clearCachedProvider();
+    }
+    setAccount(null);
+    setContract(null);
+    setContractInfo(null);
+    setObjectDetails(null);
   };
 
   const fetchContractInfo = async () => {
@@ -106,23 +127,18 @@ const HomePage = () => {
 
     try {
       const objectCount = await contract.objectCount();
-      const address = await contract.getAddress();
+      const address = contract.address;
 
       setContractInfo({
         address: address,
         objectCount: Number(objectCount),
       });
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          'Errore durante il recupero delle informazioni del contratto:',
-          error.message
-        );
-        setErrorMessage('Errore durante il recupero delle informazioni del contratto.');
-      } else {
-        console.error('Errore sconosciuto durante il recupero delle informazioni del contratto.');
-        setErrorMessage('Errore sconosciuto durante il recupero delle informazioni del contratto.');
-      }
+    } catch (error: any) {
+      console.error(
+        'Errore durante il recupero delle informazioni del contratto:',
+        error.message
+      );
+      setErrorMessage('Errore durante il recupero delle informazioni del contratto.');
     }
   };
 
@@ -148,16 +164,11 @@ const HomePage = () => {
       fetchContractInfo();
       setLoadingMessage('');
       setIsLoading(false);
-    } catch (error: unknown) {
+    } catch (error: any) {
       setIsLoading(false);
       setLoadingMessage('');
-      if (error instanceof Error) {
-        console.error("Errore durante la creazione dell'oggetto:", error.message);
-        setErrorMessage("Errore durante la creazione dell'oggetto.");
-      } else {
-        console.error("Errore sconosciuto durante la creazione dell'oggetto.");
-        setErrorMessage("Errore sconosciuto durante la creazione dell'oggetto.");
-      }
+      console.error("Errore durante la creazione dell'oggetto:", error.message);
+      setErrorMessage("Errore durante la creazione dell'oggetto.");
     }
   };
 
@@ -180,16 +191,11 @@ const HomePage = () => {
       await viewObject();
       setLoadingMessage('');
       setIsLoading(false);
-    } catch (error: unknown) {
+    } catch (error: any) {
       setIsLoading(false);
       setLoadingMessage('');
-      if (error instanceof Error) {
-        console.error("Errore durante la firma dell'oggetto:", error.message);
-        setErrorMessage("Errore durante la firma dell'oggetto.");
-      } else {
-        console.error("Errore sconosciuto durante la firma dell'oggetto.");
-        setErrorMessage("Errore sconosciuto durante la firma dell'oggetto.");
-      }
+      console.error("Errore durante la firma dell'oggetto:", error.message);
+      setErrorMessage("Errore durante la firma dell'oggetto.");
     }
   };
 
@@ -219,60 +225,61 @@ const HomePage = () => {
       });
       setIsLoading(false);
       setLoadingMessage('');
-    } catch (error: unknown) {
+    } catch (error: any) {
       setIsLoading(false);
       setLoadingMessage('');
-      if (error instanceof Error) {
-        console.error("Errore durante la visualizzazione dell'oggetto:", error.message);
-        setErrorMessage("Errore durante la visualizzazione dell'oggetto.");
-      } else {
-        console.error("Errore sconosciuto durante la visualizzazione dell'oggetto.");
-        setErrorMessage("Errore sconosciuto durante la visualizzazione dell'oggetto.");
-      }
+      console.error("Errore durante la visualizzazione dell'oggetto:", error.message);
+      setErrorMessage("Errore durante la visualizzazione dell'oggetto.");
     }
   };
 
   const HeaderComponent = () => (
     <header className="flex flex-col sm:flex-row justify-between items-center mb-4">
-    <h1 className="text-3xl font-bold">SmartSeal</h1>
-    <div className="flex flex-wrap items-center gap-4 mt-4 sm:mt-0">
-      <div>
-        <label htmlFor="contractSelect" className="sr-only">Seleziona Contratto</label>
-        <select
-          id="contractSelect"
-          value={selectedContractData ? selectedContractData.address : ''}
-          onChange={(e) => {
-            const selectedAddress = e.target.value;
-            const contractData = contracts.find(
-              (c) => c.address === selectedAddress
-            );
-            setSelectedContractData(contractData || null);
-            setContract(null);
-            setContractInfo(null);
-            setObjectDetails(null);
-          }}
-          className="rounded-[1.6rem] p-1 text-sm"
-        >
-          <option value="" disabled>
-            Seleziona
-          </option>
-          {contracts.map((contract) => (
-            <option key={contract.address} value={contract.address}>
-              {contract.name}
+      <h1 className="text-3xl font-bold">SmartSeal</h1>
+      <div className="flex flex-wrap items-center gap-4 mt-4 sm:mt-0">
+        <div>
+          <label htmlFor="contractSelect" className="sr-only">Seleziona Contratto</label>
+          <select
+            id="contractSelect"
+            value={selectedContractData ? selectedContractData.address : ''}
+            onChange={(e) => {
+              const selectedAddress = e.target.value;
+              const contractData = contracts.find(
+                (c) => c.address === selectedAddress
+              );
+              setSelectedContractData(contractData || null);
+              setContract(null);
+              setContractInfo(null);
+              setObjectDetails(null);
+            }}
+            className="rounded-[1.6rem] p-1 text-sm"
+          >
+            <option value="" disabled>
+              Seleziona
             </option>
-          ))}
-        </select>
+            {contracts.map((contract) => (
+              <option key={contract.address} value={contract.address}>
+                {contract.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {account && (
+          <Badge variant="secondary" className="px-4 py-2">
+            {`${account.slice(0, 6)}...${account.slice(-4)}`}
+          </Badge>
+        )}
+        {account ? (
+          <Button onClick={disconnectWallet} disabled={isLoading} className='text-[10px]'>
+            Disconnetti Wallet
+          </Button>
+        ) : (
+          <Button onClick={connectWallet} disabled={isLoading || !selectedContractData} className='text-[10px]'>
+            Connetti Wallet
+          </Button>
+        )}
       </div>
-      {account && (
-        <Badge variant="secondary" className="px-4 py-2">
-          {`${account.slice(0, 6)}...${account.slice(-4)}`}
-        </Badge>
-      )}
-      <Button onClick={connectWallet} disabled={isLoading || !selectedContractData} className='text-[10px]'>
-        {account ? 'Wallet Connesso' : 'Connetti Wallet'}
-      </Button>
-    </div>
-  </header>
+    </header>
   );
 
   const ContractInfoCard = () => (
@@ -293,9 +300,9 @@ const HomePage = () => {
               </code>
             </div>
             <div className='rounded-md border p-4'>
-            <ScrollArea className="h-[100px]">
-              <p className="text-sm">Condizioni contratto</p>
-            </ScrollArea>
+              <ScrollArea className="h-[100px]">
+                <p className="text-sm">Condizioni contratto</p>
+              </ScrollArea>
             </div>
             <div>
               <h3 className="font-semibold">Numero di Oggetti:</h3>
@@ -385,9 +392,9 @@ const HomePage = () => {
         </CardHeader>
         <CardContent>
           <div className='rounded-md border p-4'>
-          <ScrollArea className="h-[200px]">
-            <p className="text-sm">{objectDetails.content}</p>
-          </ScrollArea>
+            <ScrollArea className="h-[200px]">
+              <p className="text-sm">{objectDetails.content}</p>
+            </ScrollArea>
           </div>
           <Separator className="my-4" />
           <div className="space-y-2">
