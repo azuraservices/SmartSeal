@@ -235,7 +235,7 @@ const HomePage = () => {
   const HeaderComponent = () => (
     <header className="flex flex-col sm:flex-row justify-between items-center mb-4">
       <h1 className="text-4xl font-black">SmartSeal</h1>
-      <p className="text-center mb-3 text-gray-600 max-w-3xl mx-auto">
+      <p className="mb-3 text-gray-600 sm:hidden">
         I tuoi contratti inviolabili
       </p>
       <div className="flex flex-wrap items-center gap-4 mt-1 sm:mt-0">
@@ -297,7 +297,7 @@ const HomePage = () => {
           <div className="space-y-4">
             <div className="grid gap-2">
               <h3 className="font-semibold">Indirizzo Contratto:</h3>
-              <code className="text-[12px] bg-muted p-2 rounded-md">
+              <code className="text-[10px] bg-muted p-2 rounded-md text-center">
                 {contractInfo.address}
               </code>
             </div>
@@ -307,10 +307,14 @@ const HomePage = () => {
               </ScrollArea>
             </div>
             <div>
+            
+            <div className="flex items-center space-x-2 justify-center">
               <h3 className="font-semibold">Numero di Oggetti:</h3>
-              <p className="text-2xl font-bold">
+              <code className="text-[14px] font-black bg-muted p-2 rounded-md pr-4 pl-4">
                 {contractInfo.objectCount}
-              </p>
+              </code>
+            </div>
+              
             </div>
           </div>
         ) : (
@@ -330,7 +334,7 @@ const HomePage = () => {
   const CreateObjectForm = () => (
     <Card>
       <CardHeader>
-        <CardTitle>Registra un nuovo oggetto</CardTitle>
+        <CardTitle>Registra Oggetto</CardTitle>
         <CardDescription>
           Inserisci i dettagli da registrare sulla
           blockchain
@@ -339,7 +343,7 @@ const HomePage = () => {
       <CardContent className="space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <label htmlFor="ownerName">Nome Proprietario</label>
+            <label htmlFor="ownerName" className='font-semibold'>Nome Proprietario</label>
             <Input
               id="ownerName"
               value={ownerName}
@@ -349,7 +353,7 @@ const HomePage = () => {
             />
           </div>
           <div className="grid gap-2">
-            <label htmlFor="title">Titolo Oggetto</label>
+            <label htmlFor="title" className='font-semibold'>Titolo Oggetto</label>
             <Input
               id="title"
               value={title}
@@ -359,7 +363,7 @@ const HomePage = () => {
             />
           </div>
           <div className="grid gap-2">
-            <label htmlFor="content">Descrizione Oggetto</label>
+            <label htmlFor="content" className='font-semibold'>Descrizione Oggetto</label>
             <Textarea
               id="content"
               value={content}
@@ -386,8 +390,8 @@ const HomePage = () => {
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>{objectDetails.title}</CardTitle>
-              <CardDescription>ID Oggetto: {objectId}</CardDescription>
+              <CardTitle className='uppercase font-black'>{objectDetails.title}</CardTitle>
+              <CardDescription className='text-sm'>ID Oggetto: {objectId}</CardDescription>
             </div>
             <Badge variant={objectDetails.isSigned ? 'default' : 'secondary'}>
               {objectDetails.isSigned ? 'Firmato' : 'Non Firmato'}
@@ -403,10 +407,10 @@ const HomePage = () => {
           <Separator className="my-4" />
           <div className="space-y-2">
             <p className="text-sm">
-              <span className="font-semibold">Proprietario:</span> {objectDetails.ownerName}
+              <span className="font-semibold">Proprietario:</span> <span className='font-black uppercase'>{objectDetails.ownerName}</span>
             </p>
-            <p className="text-[12px]">
-              <span className="font-semibold">Indirizzo:</span> {objectDetails.ownerAddress}
+            <p className="text-sm">
+              <span className="font-semibold">Indirizzo:</span> <span className='text-[10px]'>{objectDetails.ownerAddress}</span>
             </p>
             <p className="text-sm">
               <span className="font-semibold">Data:</span> {objectDetails.timestamp}
@@ -435,7 +439,7 @@ const HomePage = () => {
       <CardHeader>
         <CardTitle>Visualizza un Oggetto</CardTitle>
         <CardDescription>
-          Cerca e visualizza i dettagli di un oggetto esistente
+          Cerca e visualizza i dettagli in Blockchain
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -477,16 +481,16 @@ const HomePage = () => {
           onValueChange={setCurrentTab}
           className="space-y-4"
         >
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="home" className="flex items-center gap-2">
+          <TabsList className="flex flex-wrap justify-between w-full">
+            <TabsTrigger value="home" className="flex items-center gap-2 flex-1 justify-center">
               <Home className="w-4 h-4" />
               Home
             </TabsTrigger>
-            <TabsTrigger value="create" className="flex items-center gap-2">
+            <TabsTrigger value="create" className="flex items-center gap-2 flex-1 justify-center">
               <Plus className="w-4 h-4" />
               Crea
             </TabsTrigger>
-            <TabsTrigger value="view" className="flex items-center gap-2">
+            <TabsTrigger value="view" className="flex items-center gap-2 flex-1 justify-center">
               <Eye className="w-4 h-4" />
               Visualizza
             </TabsTrigger>
