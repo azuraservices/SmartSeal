@@ -22,7 +22,6 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 
-// Importa i contratti dal file contracts.tsx
 import { contracts, ContractData } from './contracts';
 
 interface ContractInfo {
@@ -235,7 +234,7 @@ const HomePage = () => {
 
   const HeaderComponent = () => (
     <header className="flex flex-col sm:flex-row justify-between items-center mb-4">
-      <h1 className="text-3xl font-bold">SmartSeal</h1>
+      <h1 className="text-4xl font-black">SmartSeal</h1>
       <p className="text-center mb-3 text-gray-600 max-w-3xl mx-auto">
         I tuoi contratti inviolabili
       </p>
@@ -273,11 +272,11 @@ const HomePage = () => {
           </Badge>
         )}
         {account ? (
-          <Button onClick={disconnectWallet} disabled={isLoading} className='text-[10px] mb-0'>
+          <Button onClick={disconnectWallet} disabled={isLoading} className='text-[10px] mb-0 h-8'>
             Disconnetti
           </Button>
         ) : (
-          <Button onClick={connectWallet} disabled={isLoading || !selectedContractData} className='text-[10px] m-0'>
+          <Button onClick={connectWallet} disabled={isLoading || !selectedContractData} className='text-[10px] h-8'>
             Connetti
           </Button>
         )}
