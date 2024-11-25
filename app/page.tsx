@@ -233,7 +233,7 @@ const HomePage = () => {
   };
 
   const HeaderComponent = () => (
-    <header className="flex flex-col sm:flex-row justify-between items-center mb-8">
+    <header className="flex flex-col sm:flex-row justify-between items-center mb-4">
     <h1 className="text-3xl font-bold">SmartSeal</h1>
     <div className="flex flex-wrap items-center gap-4 mt-4 sm:mt-0">
       <div>
@@ -448,7 +448,7 @@ const HomePage = () => {
       <div className="container mx-auto">
         <HeaderComponent />
         {errorMessage && (
-          <Alert variant="destructive">
+          <Alert variant="destructive" className='mb-4'>
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Errore</AlertTitle>
             <AlertDescription>{errorMessage}</AlertDescription>
