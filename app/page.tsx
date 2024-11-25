@@ -62,9 +62,16 @@ const HomePage = () => {
         infuraId: 'd20498bf032647fda188ad14bfd7f0de', // Sostituisci con la tua API Key di Infura
         rpc: {
           1: 'https://mainnet.infura.io/v3/d20498bf032647fda188ad14bfd7f0de',
-          137: 'https://rpc-amoy.polygon.technology', // Rete Polygon Mainnet
-          // Aggiungi altre reti se necessario
+          137: 'https://rpc-mainnet.maticvigil.com',
         },
+        mobileLinks: [
+          "metamask",
+          "trust",
+          "rainbow",
+          "argent",
+          "imtoken",
+          "pillar",
+        ],
       },
     },
   };
