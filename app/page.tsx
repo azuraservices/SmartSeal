@@ -382,7 +382,7 @@ const HomePage = () => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={createObject} className="w-full" disabled={isLoading}>
+        <Button onClick={createObject} className="w-full mb-2" disabled={isLoading}>
           {isLoading ? 'Creazione in corso...' : 'Crea Oggetto'}
         </Button>
       </CardFooter>
