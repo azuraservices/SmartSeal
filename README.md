@@ -1,153 +1,104 @@
-# SmartSeal - Fai i tuoi accordi inviolabili
+# SmartSeal - README.md
 
-SmartSeal è un'applicazione web che permette a individui e aziende di **creare**, **firmare** e **registrare** contratti privati sulla blockchain in modo sicuro e immutabile. Utilizza la blockchain di **Polygon** per transazioni rapide ed economiche, insieme a **Next.js** e **TypeScript** per un'esperienza utente fluida.
+## Overview
 
-## Funzionalità Principali
+**SmartSeal** is a web application built with Next.js and TypeScript that enables individuals and businesses to **create**, **digitally sign**, and **securely store** private contracts on the Polygon blockchain. The app offers an intuitive interface for crafting contracts using predefined templates or custom text, signing them digitally with biometric authentication compliant with eIDAS standards, and registering them immutably on the blockchain. Users can easily access and manage their contracts through a user-friendly dashboard.
 
-- **Creazione di Contratti**
+## Features
 
-  - Modelli predefiniti per vari tipi di accordi (affitto, prestito, vendita).
-  - Editor avanzato per la creazione di contratti personalizzati.
-  - Assistente legale AI per suggerimenti e correzioni.
+- **Contract Creation**
+  - **Predefined Templates**: Choose from templates for various agreement types (rental, loan, sale).
+  - **Custom Contracts**: Use an advanced text editor to draft personalized contracts.
+  - **AI Legal Assistant**: Receive suggestions and corrections to ensure legal validity.
 
-- **Firma Digitale**
+- **Digital Signature**
+  - **Biometric Authentication**: Sign contracts using fingerprint or facial recognition.
+  - **eIDAS Compliance**: Meets European standards for advanced electronic signatures.
 
-  - Identificazione biometrica tramite impronte digitali o riconoscimento facciale.
-  - Conformità agli standard **eIDAS** per firme elettroniche avanzate.
+- **Blockchain Registration**
+  - **Polygon Integration**: Secure and immutable contract registration on the Polygon blockchain.
+  - **Contract Hashing**: Protect privacy by storing only the contract's hash on the blockchain.
 
-- **Registrazione su Blockchain**
+- **Secure Storage**
+  - **Off-Chain Storage**: Store complete contracts securely using IPFS (InterPlanetary File System).
+  - **Easy Access**: Access contracts via QR codes and a comprehensive user dashboard.
 
-  - Utilizzo della rete **Polygon** per registrare gli hash dei contratti.
-  - Protezione della privacy evitando di salvare dati sensibili sulla blockchain.
+- **Automated Execution**
+  - **Smart Contracts**: Implement automated conditions (e.g., payments upon clause fulfillment).
+  - **Wallet Integration**: Manage payments through wallets like MetaMask.
 
-- **Archiviazione Sicura**
+- **Legal Validity**
+  - **Multi-Jurisdictional Support**: Automatically adapt contracts to local regulations.
+  - **Digital Notarization**: Optional notarization services for enhanced legal standing.
 
-  - Archiviazione off-chain dei contratti completi tramite **IPFS**.
-  - Accesso facilitato attraverso codici QR e dashboard utente.
+- **Dispute Management**
+  - **Arbitration Platform**: Resolve disputes with certified neutral arbitrators.
+  - **Violation Reporting**: Log and monitor contractual violations.
 
-- **Esecuzione Automatizzata**
+## Components
 
-  - Implementazione di **smart contract** per condizioni automatizzate.
-  - Integrazione con wallet come MetaMask per gestire pagamenti.
+- **Contract Editor**: Advanced editor for drafting and customizing contracts with formatting tools.
+- **AI Legal Assistant**: Provides real-time legal suggestions to enhance contract validity.
+- **Signature Module**: Handles biometric authentication and digital signing processes.
+- **Blockchain Interface**: Manages interactions with the Polygon blockchain for contract registration.
+- **Storage Manager**: Oversees secure off-chain storage of contracts using IPFS.
+- **User Dashboard**: Central hub for users to manage, access, and monitor their contracts.
+- **Dispute Resolution System**: Facilitates arbitration and dispute management within the app.
 
-- **Validità Legale**
+## Data Structure
 
-  - Adattamento automatico alle normative locali.
-  - Opzioni di notarizzazione digitale per maggiore validità.
+- **Contract**
+  - `id`: Unique identifier.
+  - `title`: Contract title.
+  - `content`: Contract text.
+  - `parties`: Involved parties.
+  - `dateCreated`: Timestamp of creation.
+  - `hash`: Blockchain hash of the contract.
+  - `status`: Current status (e.g., signed, pending).
 
-- **Gestione Dispute**
-  - Sistema interno di arbitrato con arbitri certificati.
-  - Registrazione e monitoraggio delle violazioni contrattuali.
+- **User**
+  - `userId`: Unique user identifier.
+  - `name`: User's full name.
+  - `biometricData`: Encrypted biometric information.
+  - `walletAddress`: Blockchain wallet address.
+  - `contracts`: Associated contracts.
 
-## Tecnologie Utilizzate
+- **Smart Contract**
+  - Blockchain-based logic for automated execution.
+  - Conditions and actions defined within the contract.
+
+- **Dispute**
+  - `disputeId`: Unique identifier for the dispute.
+  - `contractId`: Associated contract.
+  - `description`: Details of the dispute.
+  - `resolutionStatus`: Current status of the dispute.
+
+## Dependencies
 
 - **Frontend**
-
   - Next.js
   - React
   - TypeScript
-  - Material-UI o Chakra UI per componenti UI.
+  - Material-UI or Chakra UI for UI components.
 
 - **Backend**
-
-  - Node.js con TypeScript
-  - Express o NestJS per la struttura del server.
-  - PostgreSQL o MongoDB come database.
+  - Node.js with TypeScript
+  - Express or NestJS framework
+  - PostgreSQL or MongoDB for database
 
 - **Blockchain**
+  - Polygon (Matic) network
+  - Solidity for smart contracts
+  - Ethers.js or Web3.js for blockchain interactions
 
-  - Polygon (Matic) per transazioni economiche e veloci.
-  - Solidity per gli smart contract.
+- **Storage**
+  - IPFS for decentralized file storage
+  - Pinata or Infura for IPFS pinning services
 
-- **Archiviazione Decentralizzata**
+- **Security**
+  - JSON Web Tokens (JWT) for authentication
+  - SSL/TLS encryption
+  - OAuth 2.0 for secure authorization
 
-  - IPFS per l'archiviazione dei documenti.
-  - Servizi di pinning come Pinata o Infura.
-
-- **Sicurezza**
-
-  - Crittografia end-to-end dei dati.
-  - Autenticazione a due fattori (2FA).
-  - Gestione sicura delle sessioni con JWT.
-
-- **AI e NLP**
-  - Integrazione con modelli di linguaggio naturale per l'assistente legale.
-
-## Requisiti di Sistema
-
-- **Node.js** v14 o superiore
-- **npm** v6 o superiore
-- **Metamask** o altro wallet compatibile con Ethereum
-- Browser moderno (Chrome, Firefox, Edge)
-
-## Installazione
-
-1. **Clona il repository**
-
-   Clona il progetto sul tuo ambiente locale utilizzando il comando `git clone`.
-
-2. **Installa le dipendenze**
-
-   Nella directory del progetto, installa le dipendenze necessarie tramite `npm install`.
-
-3. **Configura le variabili d'ambiente**
-
-   Crea un file `.env` nella radice del progetto e aggiungi le variabili necessarie (chiavi API, ID di progetto, segreti, ecc.).
-
-4. **Avvia l'applicazione in modalità sviluppo**
-
-   Esegui `npm run dev` per avviare l'applicazione in modalità sviluppo.
-
-5. **Accedi all'applicazione**
-
-   Apri il browser e visita `http://localhost:3000` per utilizzare SmartSeal localmente.
-
-## Distribuzione
-
-Per distribuire l'applicazione in produzione:
-
-1. **Build dell'applicazione**
-
-   Esegui `npm run build` per creare una build ottimizzata per la produzione.
-
-2. **Avvia l'applicazione**
-
-   Utilizza `npm start` per avviare il server in modalità produzione.
-
-3. **Configura l'ambiente di produzione**
-
-   Assicurati di impostare correttamente le variabili d'ambiente e di utilizzare un ambiente sicuro (HTTPS, certificati SSL, ecc.).
-
-## Contribuire
-
-Siamo aperti a contributi da parte della comunità!
-
-1. Fai un **fork** del progetto.
-2. Crea un nuovo **branch** per la tua funzionalità o correzione (`git checkout -b feature/nome-feature`).
-3. Fai **commit** delle tue modifiche (`git commit -m 'Aggiungi nuova funzionalità'`).
-4. Fai **push** al branch (`git push origin feature/nome-feature`).
-5. Apri una **Pull Request** sul repository originale.
-
-## Licenza
-
-Questo progetto è rilasciato sotto la licenza **MIT**. Consulta il file [LICENSE](LICENSE) per i dettagli.
-
-## Contatti
-
-Per domande, supporto o suggerimenti:
-
-- **Email**: [supporto@smartseal.com](mailto:supporto@smartseal.com)
-- **Sito Web**: [www.smartseal.com](https://www.smartseal.com)
-- **GitHub**: [github.com/tuo-username/smartseal](https://github.com/tuo-username/smartseal)
-
-## Risorse Utili
-
-- **Documentazione Next.js**: [Next.js Docs](https://nextjs.org/docs)
-- **Documentazione TypeScript**: [TypeScript Docs](https://www.typescriptlang.org/docs)
-- **Documentazione Polygon**: [Polygon Docs](https://docs.polygon.technology)
-- **Documentazione Solidity**: [Solidity Docs](https://docs.soliditylang.org)
-- **Documentazione IPFS**: [IPFS Docs](https://docs.ipfs.io)
-
----
-
-_SmartSeal - Portare la fiducia e la sicurezza dei contratti nella nuova era digitale._
+- **AI/NLP**
+  - Integration with NLP models for the legal assistant
