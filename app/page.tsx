@@ -236,7 +236,10 @@ const HomePage = () => {
   const HeaderComponent = () => (
     <header className="flex flex-col sm:flex-row justify-between items-center mb-4">
       <h1 className="text-3xl font-bold">SmartSeal</h1>
-      <div className="flex flex-wrap items-center gap-4 mt-4 sm:mt-0">
+      <p className="text-center mb-3 text-gray-600 max-w-3xl mx-auto">
+        I tuoi contratti inviolabili
+      </p>
+      <div className="flex flex-wrap items-center gap-4 mt-1 sm:mt-0">
         <div>
           <label htmlFor="contractSelect" className="sr-only text-[12px]">Seleziona Contratto</label>
           <select
@@ -270,12 +273,12 @@ const HomePage = () => {
           </Badge>
         )}
         {account ? (
-          <Button onClick={disconnectWallet} disabled={isLoading} className='text-[10px]'>
-            Disconnetti Wallet
+          <Button onClick={disconnectWallet} disabled={isLoading} className='text-[10px] mb-0'>
+            Disconnetti
           </Button>
         ) : (
-          <Button onClick={connectWallet} disabled={isLoading || !selectedContractData} className='text-[10px]'>
-            Connetti Wallet
+          <Button onClick={connectWallet} disabled={isLoading || !selectedContractData} className='text-[10px] m-0'>
+            Connetti
           </Button>
         )}
       </div>
@@ -328,9 +331,9 @@ const HomePage = () => {
   const CreateObjectForm = () => (
     <Card>
       <CardHeader>
-        <CardTitle>Registra un Nuovo Oggetto</CardTitle>
+        <CardTitle>Registra un nuovo oggetto</CardTitle>
         <CardDescription>
-          Inserisci i dettagli del nuovo oggetto da registrare sulla
+          Inserisci i dettagli da registrare sulla
           blockchain
         </CardDescription>
       </CardHeader>
@@ -343,6 +346,7 @@ const HomePage = () => {
               value={ownerName}
               onChange={(e) => setOwnerName(e.target.value)}
               placeholder="Inserisci il nome del proprietario"
+              className='rounded-[0.6rem]'
             />
           </div>
           <div className="grid gap-2">
@@ -352,6 +356,7 @@ const HomePage = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Inserisci il titolo dell'oggetto"
+              className='rounded-[0.6rem]'
             />
           </div>
           <div className="grid gap-2">
@@ -361,7 +366,7 @@ const HomePage = () => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Inserisci la descrizione dell'oggetto"
-              className="min-h-[100px]"
+              className="min-h-[100px] rounded-[0.6rem]"
             />
           </div>
         </div>
