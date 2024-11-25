@@ -238,7 +238,7 @@ const HomePage = () => {
       <h1 className="text-3xl font-bold">SmartSeal</h1>
       <div className="flex flex-wrap items-center gap-4 mt-4 sm:mt-0">
         <div>
-          <label htmlFor="contractSelect" className="sr-only">Seleziona Contratto</label>
+          <label htmlFor="contractSelect" className="sr-only text-[12px]">Seleziona Contratto</label>
           <select
             id="contractSelect"
             value={selectedContractData ? selectedContractData.address : ''}
@@ -252,7 +252,7 @@ const HomePage = () => {
               setContractInfo(null);
               setObjectDetails(null);
             }}
-            className="rounded-[1.6rem] p-1 text-sm"
+            className="rounded-[1.6rem] p-1 text-[12px]"
           >
             <option value="" disabled>
               Seleziona
